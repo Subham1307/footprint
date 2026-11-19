@@ -37,13 +37,13 @@ export function Navigation() {
   return (
   <>
       <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-deep)_88%,transparent)] backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 md:px-6">
+        <div className="mx-auto flex h-16 w-full min-w-0 max-w-6xl items-center justify-between gap-2 px-4 sm:gap-4 md:px-6">
           <Link
             href="/"
             onClick={onWordmarkClick}
-            className="group flex items-baseline gap-2"
+            className="group flex min-w-0 shrink items-baseline gap-2"
           >
-            <span className="text-sm font-semibold tracking-[0.18em] text-[var(--text-primary)] transition-colors group-hover:text-gradient">
+            <span className="truncate text-xs font-semibold tracking-[0.12em] text-[var(--text-primary)] transition-colors group-hover:text-gradient sm:text-sm sm:tracking-[0.18em]">
               {site.wordmark}
             </span>
             <span className="hidden text-[10px] uppercase tracking-widest text-[var(--text-muted)] sm:inline">

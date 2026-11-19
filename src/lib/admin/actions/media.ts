@@ -30,8 +30,6 @@ export async function uploadMedia(formData: FormData) {
 
   if (uploadError) throw new Error(uploadError.message);
 
-  const publicUrl = `${getSupabaseUrl()}/storage/v1/object/public/footprint-media/${storagePath}`;
-
   const { data, error } = await supabase
     .from("media_assets")
     .insert({
@@ -39,14 +37,16 @@ export async function uploadMedia(formData: FormData) {
       filename: file.name,
       mime_type: file.type,
       size_bytes: file.size,
-      public_url: publicUrl,
       uploaded_by: user.id,
     })
-    .select("id, public_url, storage_path, filename")
+    .select("id, storage_path, filename, bucket")
     .single();
 
   if (error) throw new Error(error.message);
-  return data;
+  return {
+    ...data,
+    public_url: `${getSupabaseUrl()}/storage/v1/object/public/footprint-media/${storagePath}`,
+  };
 }
 
 export async function attachJournalMedia(formData: FormData) {

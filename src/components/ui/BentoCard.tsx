@@ -38,7 +38,7 @@ export function BentoCard({
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 380, damping: 28 }}
       className={cn(
-        "surface-card group relative h-full overflow-hidden p-5 md:p-6",
+        "surface-card group relative h-full max-w-full overflow-hidden p-5 md:p-6",
         "transition-colors duration-300 hover:border-[var(--border-strong)]",
         spanClass[span],
         href && "cursor-pointer",

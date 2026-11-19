@@ -12,7 +12,7 @@ export async function Footer() {
   ].filter((link) => link.href);
 
   return (
-    <footer className="relative mt-24 border-t border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_40%,transparent)]">
+    <footer className="relative mt-24 w-full min-w-0 overflow-x-clip border-t border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_40%,transparent)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-violet)] to-transparent opacity-60"

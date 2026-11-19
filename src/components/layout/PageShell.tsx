@@ -16,7 +16,12 @@ export function PageShell({
   className?: string;
 }) {
   return (
-    <main className={cn("mx-auto w-full max-w-6xl flex-1 px-4 py-10 md:px-6 md:py-14", className)}>
+    <main
+      className={cn(
+        "mx-auto w-full min-w-0 max-w-6xl flex-1 px-4 py-10 md:px-6 md:py-14",
+        className,
+      )}
+    >
       <FadeIn>
         <SectionHeading eyebrow={eyebrow} title={title} description={description} />
       </FadeIn>

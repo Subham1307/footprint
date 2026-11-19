@@ -41,6 +41,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: "#101114" },
     { media: "(prefers-color-scheme: light)", color: "#f4f4f5" },
@@ -59,7 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-full w-full min-w-0 flex-col overflow-x-clip">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

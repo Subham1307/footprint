@@ -13,9 +13,9 @@ export function AdminShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-[var(--bg-deep)] text-[var(--text-primary)] lg:grid lg:grid-cols-[260px_1fr]">
+    <div className="min-h-screen w-full min-w-0 overflow-x-clip bg-[var(--bg-deep)] text-[var(--text-primary)] lg:grid lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
       <AdminSidebar />
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-screen min-w-0 flex-col">
         <header className="border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg-elevated)_70%,transparent)] px-4 py-5 md:px-8">
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>

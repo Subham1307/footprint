@@ -19,7 +19,7 @@ export function HeroSection({ owner, tagline, timezone, availabilityLabel, secti
   const firstName = owner.split(" ")[0];
 
   return (
-    <section className="relative isolate pt-12 pb-16 md:pt-20 md:pb-24">
+    <section className="relative isolate overflow-hidden pt-12 pb-16 md:pt-20 md:pb-24">
       <div className="aurora" aria-hidden>
         <span />
         <span />
@@ -40,7 +40,7 @@ export function HeroSection({ owner, tagline, timezone, availabilityLabel, secti
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease, delay: 0.05 }}
-        className="max-w-4xl text-5xl font-semibold tracking-tight text-[var(--text-primary)] md:text-7xl md:leading-[1.02]"
+        className="max-w-full break-words text-4xl font-semibold tracking-tight text-[var(--text-primary)] sm:text-5xl md:text-7xl md:leading-[1.02]"
       >
         Hey, I&apos;m <span className="text-shimmer">{firstName}</span>.
       </motion.h1>

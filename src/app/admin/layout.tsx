@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function AdminRootLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-[var(--bg-deep)]">
+    <div className="min-h-screen w-full min-w-0 overflow-x-clip bg-[var(--bg-deep)]">
       <Suspense fallback={<AdminRouteFallback />}>{children}</Suspense>
     </div>
   );

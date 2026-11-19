@@ -47,6 +47,9 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body {
@@ -54,6 +57,9 @@ body {
   color: var(--text-primary);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   min-height: 100vh;
+  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body::before {
@@ -127,14 +133,14 @@ body::after {
   opacity: 0.05;
 }
 
-/* Hero aurora */
+/* Hero aurora (clipped by parent overflow-hidden) */
 .aurora {
   position: absolute;
-  inset: -20% -10% auto -10%;
-  height: 120%;
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
   z-index: -1;
-  filter: blur(64px);
+  filter: blur(48px);
   opacity: 0.55;
 }
 
@@ -187,10 +193,10 @@ body::after {
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(6%, 8%, 0) scale(1.12);
+    transform: translate3d(3%, 5%, 0) scale(1.06);
   }
   100% {
-    transform: translate3d(-5%, -4%, 0) scale(0.94);
+    transform: translate3d(-2%, -2%, 0) scale(0.96);
   }
 }
 
@@ -231,7 +237,7 @@ body::after {
   opacity: 0;
   transition: opacity 300ms ease;
   background: radial-gradient(
-    420px circle at var(--mx, 50%) var(--my, 50%),
+    min(420px, 100vw) circle at var(--mx, 50%) var(--my, 50%),
     var(--glow),
     transparent 65%
   );
@@ -304,9 +310,16 @@ body::after {
     opacity: 0.7;
   }
   100% {
-    transform: scale(2.6);
+    transform: scale(1.6);
     opacity: 0;
   }
+}
+
+/* Long code / prose blocks */
+.prose pre,
+.prose code {
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {

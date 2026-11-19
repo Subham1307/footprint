@@ -73,7 +73,9 @@ export function PlacesBoard({ places }: Props) {
         </div>
         <svg
           viewBox="0 0 600 280"
-          className="mt-6 w-full"
+          className="mt-6 h-auto w-full max-w-full"
+          overflow="hidden"
+          preserveAspectRatio="xMidYMid meet"
           role="img"
           aria-label={`Map sketch with ${places.length} places`}
         >
@@ -112,7 +114,7 @@ export function PlacesBoard({ places }: Props) {
                   r="8"
                   fill={color}
                   opacity="0.35"
-                  className="pin-pulse"
+                  className="pin-pulse max-sm:hidden"
                   style={{ animationDelay: `${i * 0.4}s` }}
                 />
                 <circle

@@ -2,6 +2,7 @@ import { places as staticPlaces } from "@/data/places";
 import { cacheTag } from "next/cache";
 import { FOOTPRINT_CONTENT_TAG } from "@/lib/content/cache-tags";
 import { tryCreatePublicClient } from "@/lib/supabase/public";
+import { storagePublicUrl } from "@/lib/supabase/media-url";
 import type { ContentSource, PublicPlace } from "@/lib/content/types";
 
 function mapStatic(): PublicPlace[] {
@@ -28,11 +29,12 @@ export async function getPublicPlaces(): Promise<{
 
   const { data, error } = await supabase
     .from("places")
-    .select("*, place_media(sort_order, media_assets(public_url, storage_path))")
+    .select("*, place_media(sort_order, media_assets(storage_path, bucket))")
     .eq("is_public", true)
     .order("name");
 
-  if (error || !data?.length) return { places: [], source: "database" };
+  if (error) return { places: [], source: "database" };
+  if (!data?.length) return { places: [], source: "database" };
 
   return {
     source: "database",
@@ -45,11 +47,14 @@ export async function getPublicPlaces(): Promise<{
       mood: p.mood ?? "",
       gradient: p.gradient_class ?? "from-slate-800 to-slate-950",
       imageUrls:
-        p.place_media?.map(
-          (m: { media_assets: { public_url: string | null; storage_path: string } }) =>
-            m.media_assets.public_url ??
-            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/footprint-media/${m.media_assets.storage_path}`,
-        ) ?? [],
+        p.place_media
+          ?.map(
+            (m: { media_assets: { storage_path: string; bucket: string } | null }) => {
+              if (!m.media_assets?.storage_path) return null;
+              return storagePublicUrl(m.media_assets.storage_path, m.media_assets.bucket);
+            },
+          )
+          .filter((url): url is string => Boolean(url)) ?? [],
     })),
   };
 }
