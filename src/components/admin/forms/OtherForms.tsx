@@ -6,6 +6,8 @@ import { saveGoal } from "@/lib/admin/actions/goals";
 import { saveSiteProfile } from "@/lib/admin/actions/profile";
 import { saveDigitalItem } from "@/lib/admin/actions/digital";
 import { CheckRow, Field, FormCard, Select, TextArea, TextInput } from "@/components/admin/AdminForm";
+import { GradientPaletteField } from "@/components/admin/GradientPaletteField";
+import { PLACE_GRADIENTS } from "@/lib/design/palettes";
 
 export function MemoryForm({ initial }: { initial: Record<string, unknown> }) {
   return (
@@ -66,7 +68,13 @@ export function PlaceForm({ initial }: { initial: Record<string, unknown> }) {
       </Field>
       <Field label="First visited"><TextInput name="first_visited_date" type="date" defaultValue={String(initial.first_visited_date ?? "")} /></Field>
       <Field label="Mood"><TextInput name="mood" defaultValue={String(initial.mood ?? "")} /></Field>
-      <Field label="Gradient classes (Tailwind)"><TextInput name="gradient_class" defaultValue={String(initial.gradient_class ?? "from-slate-800 to-slate-950")} /></Field>
+      <Field label="Color palette" hint="Background gradient for this place on the map and home preview">
+        <GradientPaletteField
+          name="gradient_class"
+          defaultValue={String(initial.gradient_class ?? "from-slate-800 to-slate-950")}
+          presets={PLACE_GRADIENTS}
+        />
+      </Field>
       <Field label="Description"><TextArea name="description" rows={4} defaultValue={String(initial.description ?? "")} /></Field>
       <CheckRow name="is_public" label="Public" defaultChecked={Boolean(initial.is_public ?? true)} />
     </FormCard>

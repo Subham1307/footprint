@@ -1,5 +1,8 @@
 import { saveInterest } from "@/lib/admin/actions/interests";
 import { CheckRow, Field, FormCard, TextArea, TextInput } from "@/components/admin/AdminForm";
+import { AccentColorField } from "@/components/admin/AccentColorField";
+import { GradientPaletteField } from "@/components/admin/GradientPaletteField";
+import { INTEREST_GRADIENTS } from "@/lib/design/palettes";
 
 const iconOptions = [
   "sparkles",
@@ -34,7 +37,7 @@ export function InterestForm({ initial }: { initial: Record<string, unknown> }) 
       <Field label="Description">
         <TextArea name="description" rows={4} defaultValue={String(initial.description ?? "")} />
       </Field>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <Field label="Icon key">
           <select
             name="icon"
@@ -48,17 +51,21 @@ export function InterestForm({ initial }: { initial: Record<string, unknown> }) 
             ))}
           </select>
         </Field>
-        <Field label="Accent color">
-          <TextInput name="accent_color" defaultValue={String(initial.accent_color ?? "#8b7cf8")} />
-        </Field>
         <Field label="Sort order">
           <TextInput name="sort_order" type="number" defaultValue={String(initial.sort_order ?? "0")} />
         </Field>
       </div>
-      <Field label="Gradient (Tailwind classes)">
-        <TextInput
+      <Field label="Accent color">
+        <AccentColorField
+          name="accent_color"
+          defaultValue={String(initial.accent_color ?? "#8b7cf8")}
+        />
+      </Field>
+      <Field label="Card palette" hint="Soft gradient behind each interest card">
+        <GradientPaletteField
           name="gradient_class"
           defaultValue={String(initial.gradient_class ?? "from-violet-500/15 to-transparent")}
+          presets={INTEREST_GRADIENTS}
         />
       </Field>
       <Field label="Highlights" hint="One per line — shown on the interest page">
