@@ -1,26 +1,326 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-deep: #f4f4f5;
+  --bg-elevated: #ffffff;
+  --bg-subtle: #e4e4e7;
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
+  --border: rgba(24, 24, 27, 0.08);
+  --border-strong: rgba(24, 24, 27, 0.14);
+  --accent-violet: #7c6df0;
+  --accent-blue: #3b82f6;
+  --glow: rgba(124, 109, 240, 0.15);
+  --glass: rgba(255, 255, 255, 0.72);
+  --shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.12);
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
+}
+
+.dark {
+  --bg-deep: #101114;
+  --bg-elevated: #181a1f;
+  --bg-subtle: #22252c;
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.1);
+  --accent-violet: #8b7cf8;
+  --accent-blue: #60a5fa;
+  --glow: rgba(139, 124, 248, 0.18);
+  --glass: rgba(24, 26, 31, 0.65);
+  --shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.55);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg-deep);
+  --color-foreground: var(--text-primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--glow), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 100% 50%, rgba(59, 130, 246, 0.08), transparent),
+    radial-gradient(ellipse 35% 25% at 0% 80%, rgba(139, 124, 248, 0.06), transparent);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent-violet) 35%, transparent);
+  color: var(--text-primary);
+}
+
+.surface-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+}
+
+.surface-glass {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-violet), var(--accent-blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2.4s ease-in-out infinite;
+}
+
+/* Film grain over the whole page */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.light body::after {
+  opacity: 0.05;
+}
+
+/* Hero aurora */
+.aurora {
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 120%;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(64px);
+  opacity: 0.55;
+}
+
+.aurora span {
+  position: absolute;
+  border-radius: 9999px;
+  mix-blend-mode: screen;
+  animation: aurora-drift 18s ease-in-out infinite alternate;
+}
+
+.light .aurora {
+  opacity: 0.35;
+}
+
+.light .aurora span {
+  mix-blend-mode: multiply;
+}
+
+.aurora span:nth-child(1) {
+  width: 46%;
+  height: 60%;
+  left: 2%;
+  top: 8%;
+  background: var(--accent-violet);
+}
+
+.aurora span:nth-child(2) {
+  width: 38%;
+  height: 50%;
+  left: 40%;
+  top: 0;
+  background: var(--accent-blue);
+  animation-duration: 22s;
+  animation-delay: -6s;
+}
+
+.aurora span:nth-child(3) {
+  width: 30%;
+  height: 44%;
+  left: 62%;
+  top: 30%;
+  background: #34d399;
+  opacity: 0.45;
+  animation-duration: 26s;
+  animation-delay: -12s;
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, 8%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-5%, -4%, 0) scale(0.94);
+  }
+}
+
+/* Animated gradient text */
+.text-shimmer {
+  background: linear-gradient(
+    110deg,
+    var(--text-primary) 0%,
+    var(--text-primary) 35%,
+    var(--accent-violet) 50%,
+    var(--accent-blue) 60%,
+    var(--text-primary) 75%,
+    var(--text-primary) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  15% {
+    background-position: 100% 0;
+  }
+  85%,
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+/* Cursor-following spotlight on cards (BentoCard sets --mx / --my) */
+.spotlight {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    var(--glow),
+    transparent 65%
+  );
+}
+
+.group:hover > .spotlight {
+  opacity: 1;
+}
+
+/* Animated gradient border for featured surfaces */
+.glow-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    transparent 0deg,
+    var(--accent-violet) 80deg,
+    var(--accent-blue) 160deg,
+    transparent 240deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin-angle 6s linear infinite;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin-angle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Map route + pin pulses */
+.route-dash {
+  animation: route-dash 2.4s linear infinite;
+}
+
+@keyframes route-dash {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+.pin-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pin-pulse 2.6s ease-out infinite;
+}
+
+@keyframes pin-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .aurora span,
+  .text-shimmer,
+  .glow-border::before,
+  .route-dash,
+  .pin-pulse,
+  .animate-pulse-soft,
+  .animate-bounce {
+    animation: none !important;
+  }
 }

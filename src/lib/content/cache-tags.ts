@@ -1,0 +1,1 @@
+export const FOOTPRINT_CONTENT_TAG = "footprint:content";
