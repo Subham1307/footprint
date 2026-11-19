@@ -54,7 +54,7 @@ export async function getPublicPlaces(): Promise<{
               return storagePublicUrl(m.media_assets.storage_path, m.media_assets.bucket);
             },
           )
-          .filter((url): url is string => Boolean(url)) ?? [],
+          .filter((url: string | null): url is string => url != null) ?? [],
     })),
   };
 }
