@@ -1,5 +1,39 @@
 const cache = new Map<string, string>();
 
+/** White halo tinted per-frame via billboard color: soft disc (visited) or ring (wishlist). */
+export function haloDataUrl(visited: boolean): string {
+  const key = `halo-${visited ? "v" : "w"}`;
+  const cached = cache.get(key);
+  if (cached) return cached;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 128;
+  canvas.height = 128;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return "";
+
+  if (visited) {
+    const g = ctx.createRadialGradient(64, 64, 8, 64, 64, 62);
+    g.addColorStop(0, "rgba(255,255,255,0.9)");
+    g.addColorStop(0.45, "rgba(255,255,255,0.35)");
+    g.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(64, 64, 62, 0, Math.PI * 2);
+    ctx.fill();
+  } else {
+    ctx.strokeStyle = "rgba(255,255,255,1)";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(64, 64, 52, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  const url = canvas.toDataURL();
+  cache.set(key, url);
+  return url;
+}
+
 export function pinDataUrl(visited: boolean, selected = false): string {
   const key = `${visited ? "v" : "w"}-${selected ? "s" : "n"}`;
   const cached = cache.get(key);
