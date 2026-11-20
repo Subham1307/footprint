@@ -131,11 +131,16 @@ async function getYearArchiveIncludingPrivate(year: number): Promise<YearArchive
     places: (placeRes.data ?? []).map((p) => ({
       id: p.id,
       name: p.name,
-      region: [p.region, p.country].filter(Boolean).join(", "),
+      region: p.region ?? "",
+      country: p.country ?? undefined,
+      locationName: p.location_name ?? undefined,
       description: p.description ?? "",
       category: p.place_status,
       mood: p.mood ?? "",
       gradient: p.gradient_class ?? "from-slate-800 to-slate-950",
+      latitude: p.latitude != null ? Number(p.latitude) : null,
+      longitude: p.longitude != null ? Number(p.longitude) : null,
+      firstVisitedDate: p.first_visited_date ?? undefined,
     })),
     collections: (collectionRes.data ?? []).map((row) => ({
       id: row.id,

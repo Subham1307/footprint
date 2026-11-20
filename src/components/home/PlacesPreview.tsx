@@ -6,6 +6,10 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { MapPinned } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+function regionLabel(place: PublicPlace) {
+  return [place.region, place.country].filter(Boolean).join(", ");
+}
+
 export function PlacesPreview({ places }: { places: PublicPlace[] }) {
   const featured = places.slice(0, 4);
   return (
@@ -37,7 +41,7 @@ export function PlacesPreview({ places }: { places: PublicPlace[] }) {
                   <div className="flex flex-col justify-center p-5 md:col-span-3">
                     <div className="mb-1 flex items-center gap-2 text-xs text-[var(--text-muted)]">
                       <MapPinned className="h-3.5 w-3.5" />
-                      {place.region}
+                      {regionLabel(place)}
                     </div>
                     <h3 className="text-xl font-semibold text-[var(--text-primary)]">{place.name}</h3>
                     <p className="mt-2 text-sm text-[var(--text-secondary)]">{place.description}</p>

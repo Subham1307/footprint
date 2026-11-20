@@ -2,7 +2,15 @@
 
 import { saveJournalEntry } from "@/lib/admin/actions/journal";
 import { RichTextBodyField } from "@/components/admin/RichTextBodyField";
-import { CheckRow, Field, FormCard, Select, TextArea, TextInput } from "@/components/admin/AdminForm";
+import {
+  CheckRow,
+  DateInput,
+  Field,
+  FormCard,
+  Select,
+  TextArea,
+  TextInput,
+} from "@/components/admin/AdminForm";
 
 type Initial = {
   id?: string;
@@ -27,9 +35,12 @@ export function JournalEntryForm({ initial }: { initial: Initial }) {
       <Field label="Slug" hint="Leave blank to auto-generate from title.">
         <TextInput name="slug" defaultValue={initial.slug} />
       </Field>
-      <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Event date (when it happened)">
-          <TextInput name="event_date" type="date" required defaultValue={initial.event_date} />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Field
+          label="Event date (when it happened)"
+          className="min-w-[11.75rem] sm:col-span-2 lg:col-span-1"
+        >
+          <DateInput name="event_date" required defaultValue={initial.event_date} />
         </Field>
         <Field label="Category">
           <Select name="category" defaultValue={initial.category ?? "thought"}>

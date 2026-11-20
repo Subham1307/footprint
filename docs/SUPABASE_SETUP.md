@@ -10,6 +10,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
+Optional globe (Cesium Ion — satellite imagery & terrain on `/places` and admin map picker):
+
+```env
+NEXT_PUBLIC_CESIUM_ION_ACCESS_TOKEN=your-token
+```
+
+Without it, the globe uses a dark Carto basemap and ellipsoid terrain (still fully interactive).
+
 Optional (lets scripts apply SQL from your machine — **database password**, not the API secret):
 
 ```env

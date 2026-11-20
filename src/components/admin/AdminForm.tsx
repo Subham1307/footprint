@@ -1,18 +1,21 @@
 import { cn } from "@/lib/utils";
+import { toDateInputValue } from "@/lib/dates";
 
 export function Field({
   label,
   name,
   children,
   hint,
+  className,
 }: {
   label: string;
   name?: string;
   children: React.ReactNode;
   hint?: string;
+  className?: string;
 }) {
   return (
-    <label className="block space-y-1.5">
+    <label className={cn("block min-w-0 space-y-1.5", className)}>
       <span className="text-sm font-medium text-[var(--text-primary)]">{label}</span>
       {children}
       {hint ? <span className="text-xs text-[var(--text-muted)]">{hint}</span> : null}
@@ -29,6 +32,31 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
         "w-full rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)]/50 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[var(--accent-violet)]",
         props.className,
       )}
+    />
+  );
+}
+
+/** Full day/month/year — avoids cramped grids clipping the native day segment. */
+export function DateInput({
+  defaultValue,
+  value,
+  className,
+  ...props
+}: Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "defaultValue" | "value"> & {
+  defaultValue?: unknown;
+  value?: unknown;
+}) {
+  const normalizedDefault =
+    defaultValue !== undefined ? toDateInputValue(defaultValue) : undefined;
+  const normalizedValue = value !== undefined ? toDateInputValue(value) : undefined;
+
+  return (
+    <input
+      {...props}
+      type="date"
+      defaultValue={normalizedDefault}
+      value={normalizedValue}
+      className={cn("date-input", className)}
     />
   );
 }

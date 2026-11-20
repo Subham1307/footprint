@@ -11,11 +11,24 @@ export async function savePlace(formData: FormData) {
   const name = formData.get("name")?.toString()?.trim();
   if (!name) throw new Error("Name required");
 
+  const latRaw = formData.get("latitude")?.toString().trim();
+  const lonRaw = formData.get("longitude")?.toString().trim();
+  const latitude = latRaw ? Number.parseFloat(latRaw) : null;
+  const longitude = lonRaw ? Number.parseFloat(lonRaw) : null;
+  if (latRaw && !Number.isFinite(latitude)) throw new Error("Invalid latitude");
+  if (lonRaw && !Number.isFinite(longitude)) throw new Error("Invalid longitude");
+  if ((latitude == null) !== (longitude == null)) {
+    throw new Error("Set both latitude and longitude, or leave both empty");
+  }
+
   const payload = {
     name,
     slug: slugify(formData.get("slug")?.toString() || name),
     region: formData.get("region")?.toString() ?? "",
     country: formData.get("country")?.toString() ?? "",
+    location_name: formData.get("location_name")?.toString()?.trim() || null,
+    latitude,
+    longitude,
     description: formData.get("description")?.toString() ?? "",
     mood: formData.get("mood")?.toString() ?? "",
     gradient_class: formData.get("gradient_class")?.toString() ?? "from-slate-800 to-slate-950",

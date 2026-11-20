@@ -5,8 +5,17 @@ import { saveCollectionItem } from "@/lib/admin/actions/collections";
 import { saveGoal } from "@/lib/admin/actions/goals";
 import { saveSiteProfile } from "@/lib/admin/actions/profile";
 import { saveDigitalItem } from "@/lib/admin/actions/digital";
-import { CheckRow, Field, FormCard, Select, TextArea, TextInput } from "@/components/admin/AdminForm";
+import {
+  CheckRow,
+  DateInput,
+  Field,
+  FormCard,
+  Select,
+  TextArea,
+  TextInput,
+} from "@/components/admin/AdminForm";
 import { GradientPaletteField } from "@/components/admin/GradientPaletteField";
+import { PlaceLocationSection } from "@/components/admin/PlaceLocationSection";
 import { PLACE_GRADIENTS } from "@/lib/design/palettes";
 
 export function MemoryForm({ initial }: { initial: Record<string, unknown> }) {
@@ -14,7 +23,9 @@ export function MemoryForm({ initial }: { initial: Record<string, unknown> }) {
     <FormCard action={saveMemory}>
       {initial.id ? <input type="hidden" name="id" value={String(initial.id)} /> : null}
       <Field label="Title"><TextInput name="title" required defaultValue={String(initial.title ?? "")} /></Field>
-      <Field label="Event date"><TextInput name="event_date" type="date" required defaultValue={String(initial.event_date ?? "")} /></Field>
+      <Field label="Event date">
+        <DateInput name="event_date" required defaultValue={initial.event_date} />
+      </Field>
       <Field label="Location"><TextInput name="location" defaultValue={String(initial.location ?? "")} /></Field>
       <Field label="Category">
         <Select name="category" defaultValue={String(initial.category ?? "memory")}>
@@ -38,7 +49,7 @@ export function LifePeriodForm() {
         Closes the current period and preserves it in history. New items apply from the effective date.
       </p>
       <Field label="Effective from">
-        <TextInput name="effective_from" type="date" defaultValue="2026-11-19" required />
+        <DateInput name="effective_from" defaultValue="2026-11-19" required />
       </Field>
       <Field label="Period label (optional)"><TextInput name="label" placeholder="Late 2026 focus" /></Field>
       {types.map((type) => (
@@ -56,17 +67,24 @@ export function PlaceForm({ initial }: { initial: Record<string, unknown> }) {
       {initial.id ? <input type="hidden" name="id" value={String(initial.id)} /> : null}
       <Field label="Name"><TextInput name="name" required defaultValue={String(initial.name ?? "")} /></Field>
       <Field label="Slug"><TextInput name="slug" defaultValue={String(initial.slug ?? "")} /></Field>
-      <div className="grid gap-4 md:grid-cols-2">
-        <Field label="Region"><TextInput name="region" defaultValue={String(initial.region ?? "")} /></Field>
-        <Field label="Country"><TextInput name="country" defaultValue={String(initial.country ?? "")} /></Field>
-      </div>
+      <PlaceLocationSection
+        initial={{
+          latitude: initial.latitude as number | null | undefined,
+          longitude: initial.longitude as number | null | undefined,
+          location_name: initial.location_name as string | null | undefined,
+          region: initial.region as string | null | undefined,
+          country: initial.country as string | null | undefined,
+        }}
+      />
       <Field label="Status">
         <Select name="place_status" defaultValue={String(initial.place_status ?? "visited")}>
           <option value="visited">Visited</option>
           <option value="wishlist">Wishlist</option>
         </Select>
       </Field>
-      <Field label="First visited"><TextInput name="first_visited_date" type="date" defaultValue={String(initial.first_visited_date ?? "")} /></Field>
+      <Field label="First visited">
+        <DateInput name="first_visited_date" defaultValue={initial.first_visited_date} />
+      </Field>
       <Field label="Mood"><TextInput name="mood" defaultValue={String(initial.mood ?? "")} /></Field>
       <Field label="Color palette" hint="Background gradient for this place on the map and home preview">
         <GradientPaletteField
@@ -93,7 +111,9 @@ export function CollectionForm({ initial }: { initial: Record<string, unknown> }
           ))}
         </Select>
       </Field>
-      <Field label="Event / discovered date"><TextInput name="event_date" type="date" defaultValue={String(initial.event_date ?? "")} /></Field>
+      <Field label="Event / discovered date">
+        <DateInput name="event_date" defaultValue={initial.event_date} />
+      </Field>
       <Field label="URL"><TextInput name="external_url" type="url" defaultValue={String(initial.external_url ?? "")} /></Field>
       <Field label="Rating (1-5)"><TextInput name="personal_rating" type="number" min={1} max={5} defaultValue={String(initial.personal_rating ?? "")} /></Field>
       <Field label="Description"><TextArea name="description" rows={3} defaultValue={String(initial.description ?? "")} /></Field>
@@ -127,10 +147,16 @@ export function GoalForm({ initial }: { initial: Record<string, unknown> }) {
         </Field>
       </div>
       <Field label="Status change note"><TextInput name="status_note" placeholder="Why you paused / completed / abandoned" /></Field>
-      <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Started"><TextInput name="started_on" type="date" defaultValue={String(initial.started_on ?? "")} /></Field>
-        <Field label="Target"><TextInput name="target_date" type="date" defaultValue={String(initial.target_date ?? "")} /></Field>
-        <Field label="Completed"><TextInput name="completed_on" type="date" defaultValue={String(initial.completed_on ?? "")} /></Field>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Field label="Started" className="min-w-[11.75rem]">
+          <DateInput name="started_on" defaultValue={initial.started_on} />
+        </Field>
+        <Field label="Target" className="min-w-[11.75rem]">
+          <DateInput name="target_date" defaultValue={initial.target_date} />
+        </Field>
+        <Field label="Completed" className="min-w-[11.75rem] sm:col-span-2 lg:col-span-1">
+          <DateInput name="completed_on" defaultValue={initial.completed_on} />
+        </Field>
       </div>
       <CheckRow name="is_public" label="Show on public archive" defaultChecked={Boolean(initial.is_public ?? false)} />
     </FormCard>
@@ -170,9 +196,13 @@ export function DigitalWorldForm({ initial }: { initial: Record<string, unknown>
         </Select>
       </Field>
       <Field label="Detail"><TextArea name="detail" rows={2} defaultValue={String(initial.detail ?? "")} /></Field>
-      <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Valid from"><TextInput name="valid_from" type="date" defaultValue={String(initial.valid_from ?? "")} /></Field>
-        <Field label="Valid to"><TextInput name="valid_to" type="date" defaultValue={String(initial.valid_to ?? "")} /></Field>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Field label="Valid from" className="min-w-[11.75rem]">
+          <DateInput name="valid_from" defaultValue={initial.valid_from} />
+        </Field>
+        <Field label="Valid to" className="min-w-[11.75rem]">
+          <DateInput name="valid_to" defaultValue={initial.valid_to} />
+        </Field>
         <Field label="Sort order"><TextInput name="sort_order" type="number" defaultValue={String(initial.sort_order ?? "0")} /></Field>
       </div>
       <CheckRow name="is_public" label="Public" defaultChecked={Boolean(initial.is_public ?? true)} />

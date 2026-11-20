@@ -36,10 +36,15 @@ export type PublicPlace = {
   id: string;
   name: string;
   region: string;
+  country?: string;
+  locationName?: string;
   description: string;
   category: "visited" | "wishlist";
   mood: string;
   gradient: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  firstVisitedDate?: string;
   imageUrls?: string[];
 };
 
